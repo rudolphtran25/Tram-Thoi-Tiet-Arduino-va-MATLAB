@@ -56,7 +56,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
    - Đọc cảm biến DHT22 mỗi 2 giây.
    - Hiển thị nhiệt độ và độ ẩm lên LCD.
    - Gửi dữ liệu qua Serial theo định dạng:
-     ```arduino
+     ```
      T:<nhiet_do>,H:<do_am>\n
      ```
 2. **MATLAB Script (`DocDuLieuArduino.m`)**
@@ -119,7 +119,7 @@ TramThoiTiet_Arduino_MATLAB/
 
 ## 5. Mô tả mã nguồn
 
-### 5.1. Arduino (`TramThoiTiet_DHT22.ino`)
+### 5.1. Arduino (`Tram_Thoi_Tiet.ino`)
 
 - Khởi tạo:
   - Cảm biến `DHT22` tại chân `A3` (`DHTPIN A3`, `DHTTYPE DHT22`).
@@ -135,11 +135,11 @@ TramThoiTiet_Arduino_MATLAB/
        - Dòng 1: `Nhiet do: t C`
        - Dòng 2: `Do am: h %`
      - Gửi dữ liệu cho MATLAB theo định dạng cố định:
-       ```arduino
+       ```
        T:<t>,H:<h>\n
        ```
        Ví dụ:
-       ```arduino
+       ```
        T:30.5,H:65.2
        ```
        
@@ -149,7 +149,7 @@ Script này dùng để **đọc và kiểm tra dữ liệu** từ Arduino qua c
 
 **Cách sử dụng:**
 
-```matlab
+```
 DocDuLieuArduino();              % Chọn cổng COM & Baud Rate từ menu
 DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 ```
@@ -212,8 +212,6 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
   - Đóng cổng Serial (xóa đối tượng)
   - Cập nhật trạng thái: `Chưa kết nối`
 
----
-
 ### 5.4. Simulink (`TramThoiTiet_DHT22.slx` - nếu sử dụng)
 
 - Xây dựng mô hình Simulink mô phỏng/nhận dữ liệu từ cảm biến DHT22.
@@ -238,29 +236,82 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 
 ### 6.1. Nạp chương trình Arduino
 
-- Mở file Arduino trong thư mục `arduino/` (ví dụ: `TramThoiTiet_DHT22.ino`) bằng Arduino IDE
+- Mở file Arduino trong thư mục `arduino/` (Tram_Thoi_Tiet.ino) bằng Arduino IDE
 - Chọn đúng **Board** và **cổng COM**
 - Upload chương trình
 - Kiểm tra:
   - LCD hiển thị màn hình khởi động
   - Sau đó hiển thị nhiệt độ và độ ẩm
 
----
-
 ### 6.2. Kiểm tra Serial bằng MATLAB Script
 
 - Mở MATLAB
 - Thêm thư mục project vào path:
 
-  ```matlab
+  ```
   addpath(genpath('TramThoiTiet_Arduino_MATLAB'));
   % addpath + genpath: thêm toàn bộ thư mục dự án (và các thư mục con)
   % để MATLAB có thể gọi được các file .m, .mlapp, .slx trong project
   ```
 - Chạy:
-  ```matlab
+  ```
   DocDuLieuArduino();
   % Gọi script đọc dữ liệu từ Arduino để kiểm tra kết nối & định dạng
   ```
 - Quan sát Command Windows: Giá trị đưa ra đúng định dạng → Kết nối và định dạng dữ liệu Arduino OK.
-  
+
+### 6.3. Chạy ứng dụng MATLAB App
+
+1. Mở file `TramThoiTietApp.mlapp` trong MATLAB.
+2. Nhấn **Run** để khởi động ứng dụng App Designer.
+3. Trong giao diện ứng dụng:
+   - Chọn đúng **cổng COM** mà Arduino đang sử dụng.
+   - Chọn **Baud Rate** = `9600` (trùng với `Serial.begin(9600)` trong code Arduino).
+   - Nhấn **Kết nối**:
+     - Ứng dụng sẽ tạo đối tượng `serialport` nội bộ và mở kết nối.
+     - Nhãn trạng thái chuyển sang **"Đã kết nối"** nếu kết nối thành công.
+   - Nhấn **Bắt đầu**:
+     - App bắt đầu đọc dữ liệu tuần tự từ Arduino (tương tự logic `DocDuLieuArduino.m`).
+     - Đồ thị **Nhiệt độ** và **Độ ẩm** được cập nhật theo thời gian thực.
+     - Hai ô hiển thị số hiển thị giá trị T và H hiện tại.
+4. Khi hoàn tất:
+   - Nhấn **Kết thúc** để dừng việc cập nhật dữ liệu.
+   - Nhấn **Ngắt kết nối** để đóng cổng Serial, giải phóng tài nguyên.
+   - Tránh đóng app khi vẫn còn giữ cổng Serial mở.
+
+### 6.4. Chạy mô hình Simulink
+
+1. Mở file mô hình trong thư mục `simulink/` (Simulink_Hardware.slx).
+2. Cấu hình nguồn dữ liệu:
+   - Dùng dữ liệu mô phỏng (ví dụ khối tạo sóng, khối Constant, Signal Builder), hoặc
+   - Kết nối với phần cứng/Serial nếu có thiết lập tương ứng.
+3. Nhấn **Run**:
+   - Quan sát các tín hiệu `NhietDo` và `DoAm` trên các Scope.
+   - Có thể thêm các khối xử lý như:
+     - Lọc nhiễu.
+     - So sánh ngưỡng.
+     - Điều khiển quạt/cảnh báo theo giá trị nhiệt độ, độ ẩm.
+
+---
+
+## 7. Định dạng dữ liệu Serial
+
+Arduino gửi dữ liệu sang MATLAB với định dạng **cố định**:
+
+```
+T:<float>,H:<float>\n
+```
+**Ví dụ**
+```
+T:30.5,H:65.2
+```
+Trong MATLAB (script & App), dữ liệu được đọc và phân tích bằng:
+```
+data = sscanf(char(line), 'T:%f,H:%f');
+% 'T:%f,H:%f' nghĩa là:
+%   - Bỏ qua ký tự 'T:'
+%   - Đọc 1 số thực (nhiệt độ)
+%   - Bỏ qua ',H:'
+%   - Đọc 1 số thực (độ ẩm)
+```
+Đúng định dạng sẽ cho ra được giá trị `data(1) = 30.5`, `data(2) = 65.2`
