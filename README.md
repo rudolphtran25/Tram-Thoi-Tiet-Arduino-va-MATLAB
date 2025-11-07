@@ -58,7 +58,6 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
    - Gửi dữ liệu qua Serial theo định dạng:
      ```text
      T:<nhiet_do>,H:<do_am>\n
-     Ví dụ: T:26.1,H:83.7
      ```
 2. **MATLAB Script (`DocDuLieuArduino.m`)**
    - Kết nối tới Arduino qua Serial.
@@ -146,9 +145,12 @@ TramThoiTiet_Arduino_MATLAB/
        
 ### 5.2. MATLAB Script (`DocDuLieuArduino.m`)
 
-- Mục đích: **kiểm tra nhanh** việc truyền dữ liệu Serial từ Arduino sang MATLAB.
-- Cách dùng:
-  ```matlab
-  DocDuLieuArduino();           % chọn COM & Baud từ menu
-  DocDuLieuArduino("COM6",9600);% chỉ định trực tiếp
-  ```
+Script này dùng để **đọc và kiểm tra dữ liệu** từ Arduino qua cổng Serial, đồng thời là nền tảng logic cho ứng dụng GUI.
+
+**Cách sử dụng:**
+
+```matlab
+DocDuLieuArduino();              % Chọn cổng COM & Baud Rate từ menu
+DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
+```
+**Chức năng chính:**
