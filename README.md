@@ -154,3 +154,15 @@ DocDuLieuArduino();              % Chọn cổng COM & Baud Rate từ menu
 DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 ```
 **Chức năng chính:**
+- Nếu không truyền tham số:
+  - Liệt kê các cổng COM khả dụng bằng `serialportlist("available")`.
+  - Cho người dùng chọn cổng COM.
+  - Cho người dùng chọn Baud Rate từ danh sách: `9600`, `19200`, `38400`, `57600`, `115200`.
+- Tạo đối tượng Serial:
+  - `serialport(port, baud)` - Tạo kết nối Serial tới 'port' (ví dụ "COM6") với tốc độ 'baud' (ví dụ 9600)
+  - `configureTerminator(sp, "CR/LF")` - Thiết lập ký tự kết thúc dòng là Carriage Return + Line Feed phải khớp với Serial.println() bên Arduino
+  - `flush(sp)` trước khi bắt đầu đọc. - Xóa toàn bộ dữ liệu cũ còn tồn trong buffer trước khi bắt đầu đọc
+- Vòng lặp đọc liên tục:
+  - `sp.NumBytesAvailable` - Số byte có trong buffer để đọc
+  - `readline(sp)` - Đọc 1 dòng dữ liệu đến ký tự terminator ("CR/LF"), ví dụ "T:30.5,H:65.2"
+  - `data = sscanf(char(line), 'T:%f,H:%f')`
