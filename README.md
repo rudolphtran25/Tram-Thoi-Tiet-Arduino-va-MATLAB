@@ -126,11 +126,11 @@ TramThoiTiet_Arduino_MATLAB/
   - LCD I2C 16x2 tại địa chỉ `0x27` (có thể đổi `0x3F` nếu module khác).
   - Kênh Serial: `Serial.begin(9600)`.
 - Chu kỳ đọc: mỗi **2 giây**:
-  1. Đọc `t` (nhiệt độ °C) và `h` (độ ẩm %).
-  2. Nếu đọc lỗi (`isnan(t)` hoặc `isnan(h)`):
-     - Hiển thị thông báo lỗi trên LCD.
-     - In thông báo lỗi qua Serial.
-  3. Nếu hợp lệ:
+  - Đọc `t` (nhiệt độ °C) và `h` (độ ẩm %).
+  - Nếu đọc lỗi (`isnan(t)` hoặc `isnan(h)`):
+    - Hiển thị thông báo lỗi trên LCD.
+    - In thông báo lỗi qua Serial.
+  - Nếu hợp lệ:
      - Hiển thị lên LCD:
        - Dòng 1: `Nhiet do: t C`
        - Dòng 2: `Do am: h %`
