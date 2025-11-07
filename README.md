@@ -87,19 +87,30 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
 ```text
 TramThoiTiet_Arduino_MATLAB/
 │
-├─ arduino/
-│   └─ TramThoiTiet_DHT22.ino
+├─ ADD-ONS/
+│   ├─ arduino.mlpkginstall
+│   └─ arduinoio.mlpkginstall
+|
+├─ CODE/
+│   ├─ APP_DESIGN
+|   |   └─ Giao_Dien_Tram_Du_Bao.mlapp   
+│   ├─ ARDUINO
+|   |   └─ Tram_Thoi_Tiet
+|   |       └─ Tram_Thoi_Tiet.ino
+│   ├─ MATLAB
+|   |   └─ DocDuLieuArduino.m
+│   └─ SIMULINK
+|       ├─ DHT22
+|       └─ Simulink_Hardware.slx
 │
-├─ matlab/
-│   ├─ DocDuLieuArduino.m
-│   └─ TramThoiTietApp.mlapp
+├─ DOCS/
+│   ├─ Bao cao Tram Thoi tiet Arduino va MATLAB - Nhom 3
+│   └─ Phan_chia_cong_viec.xlsx
 │
-├─ simulink/
-│   └─ TramThoiTiet_DHT22.slx
-│
-├─ docs/
-│   ├─ Final_request-MATLAB.pdf
-│   └─ giao_dien_app.png
+├─ LIBRARY/
+│   ├─ FAdafruit_Sensor-1.1.15.zip
+│   ├─ DHT-sensor-library-1.4.6.zip
+│   └─ LiquidCrystal_I2C-1.1.3.zip
 │
 └─ README.md
 ```
