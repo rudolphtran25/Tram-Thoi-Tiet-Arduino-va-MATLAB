@@ -58,6 +58,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
    - Gửi dữ liệu qua Serial theo định dạng:
      ```text
      T:<nhiet_do>,H:<do_am>\n
+     Ví dụ: T:26.1,H:83.7
      ```
 2. **MATLAB Script (`DocDuLieuArduino.m`)**
    - Kết nối tới Arduino qua Serial.
@@ -114,3 +115,40 @@ TramThoiTiet_Arduino_MATLAB/
 │
 └─ README.md
 ```
+
+---
+
+## 5. Mô tả mã nguồn
+
+### 5.1. Arduino (`TramThoiTiet_DHT22.ino`)
+
+- Khởi tạo:
+  - Cảm biến `DHT22` tại chân `A3` (`DHTPIN A3`, `DHTTYPE DHT22`).
+  - LCD I2C 16x2 tại địa chỉ `0x27` (có thể đổi `0x3F` nếu module khác).
+  - Kênh Serial: `Serial.begin(9600)`.
+- Chu kỳ đọc: mỗi **2 giây**:
+  1. Đọc `t` (nhiệt độ °C) và `h` (độ ẩm %).
+  2. Nếu đọc lỗi (`isnan(t)` hoặc `isnan(h)`):
+     - Hiển thị thông báo lỗi trên LCD.
+     - In thông báo lỗi qua Serial.
+  3. Nếu hợp lệ:
+     - Hiển thị lên LCD:
+       - Dòng 1: `Nhiet do: t C`
+       - Dòng 2: `Do am: h %`
+     - Gửi dữ liệu cho MATLAB theo định dạng cố định:
+       ```text
+       T:<t>,H:<h>\n
+       ```
+       Ví dụ:
+       ```text
+       T:30.5,H:65.2
+       ```
+       
+### 5.2. MATLAB Script (`DocDuLieuArduino.m`)
+
+- Mục đích: **kiểm tra nhanh** việc truyền dữ liệu Serial từ Arduino sang MATLAB.
+- Cách dùng:
+  ```matlab
+  DocDuLieuArduino();           % chọn COM & Baud từ menu
+  DocDuLieuArduino("COM6",9600);% chỉ định trực tiếp
+  ```
