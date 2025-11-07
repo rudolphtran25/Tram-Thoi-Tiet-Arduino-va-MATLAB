@@ -33,7 +33,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
 
 ### 3.1. Phần cứng
 
-- Arduino Uno (hoặc tương đương)
+- Arduino Uno
 - Cảm biến DHT22
 - LCD I2C 16x2 (địa chỉ 0x27 hoặc 0x3F)
 - Dây nối, nguồn 5V và GND
@@ -56,7 +56,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
    - Đọc cảm biến DHT22 mỗi 2 giây.
    - Hiển thị nhiệt độ và độ ẩm lên LCD.
    - Gửi dữ liệu qua Serial theo định dạng:
-     ```text
+     ```arduino
      T:<nhiet_do>,H:<do_am>\n
      ```
 2. **MATLAB Script (`DocDuLieuArduino.m`)**
@@ -135,11 +135,11 @@ TramThoiTiet_Arduino_MATLAB/
        - Dòng 1: `Nhiet do: t C`
        - Dòng 2: `Do am: h %`
      - Gửi dữ liệu cho MATLAB theo định dạng cố định:
-       ```text
+       ```arduino
        T:<t>,H:<h>\n
        ```
        Ví dụ:
-       ```text
+       ```arduino
        T:30.5,H:65.2
        ```
        
@@ -174,3 +174,88 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 **Mục đích:**
 - Kiểm tra nhanh Arduino có gửi đúng định dạng T:<float>,H:<float> hay không.
 - Logic parse chuỗi này được dùng lại cho MATLAB App Designer và các module khác.
+
+### 5.3. MATLAB App (`TramThoiTietApp.mlapp`)
+
+Ứng dụng được xây dựng bằng **MATLAB App Designer**, cung cấp giao diện đồ họa để giám sát trạm thời tiết theo thời gian thực.
+
+**Thành phần chính:**
+
+- Dropdown chọn **Cổng COM**
+- Dropdown chọn **Baud Rate** (mặc định `9600`)
+- Các nút:
+  - **Làm mới**: quét lại danh sách cổng COM
+  - **Kết nối**: mở kết nối Serial đến Arduino
+  - **Ngắt kết nối**: đóng kết nối Serial
+  - **Bắt đầu**: bắt đầu đọc và hiển thị dữ liệu
+  - **Kết thúc**: dừng đọc dữ liệu
+- Hai đồ thị:
+  - Nhiệt độ (°C) theo thời gian
+  - Độ ẩm (%) theo thời gian
+- Hai ô hiển thị số:
+  - Giá trị nhiệt độ hiện tại
+  - Giá trị độ ẩm hiện tại
+- Nhãn hiển thị **trạng thái kết nối**
+
+**Logic hoạt động:**
+
+- Khi nhấn **Kết nối**:
+  - Ứng dụng tạo đối tượng `serialport` với COM & Baud được chọn
+  - Cập nhật trạng thái: `Đã kết nối`
+- Khi nhấn **Bắt đầu**:
+  - Thiết lập `timer` hoặc callback định kỳ để đọc dữ liệu từ Serial
+  - Mỗi lần nhận được chuỗi hợp lệ dạng `T:%f,H:%f`:
+    - Cập nhật dãy dữ liệu trên đồ thị
+    - Cập nhật giá trị số (nhiệt độ, độ ẩm) trên giao diện
+- Khi nhấn **Kết thúc** hoặc **Ngắt kết nối**:
+  - Dừng việc đọc dữ liệu
+  - Đóng cổng Serial (xóa đối tượng)
+  - Cập nhật trạng thái: `Chưa kết nối`
+
+---
+
+### 5.4. Simulink (`TramThoiTiet_DHT22.slx` - nếu sử dụng)
+
+- Xây dựng mô hình Simulink mô phỏng/nhận dữ liệu từ cảm biến DHT22.
+
+**Sử dụng:**
+
+- Khối **IO Device Builder** hoặc khối tùy chỉnh để đọc DHT22.
+
+**Đầu ra mô phỏng:**
+
+- `NhietDo` (°C)
+- `DoAm` (%)
+
+**Ứng dụng:**
+
+- Kết nối với Scope để quan sát
+- Kết hợp với khối lọc, điều khiển, cảnh báo (ví dụ: điều khiển quạt theo nhiệt độ)
+
+---
+
+## 6. Thiết lập & Sử dụng
+
+### 6.1. Nạp chương trình Arduino
+
+- Mở file Arduino trong thư mục `arduino/` (ví dụ: `TramThoiTiet_DHT22.ino`) bằng Arduino IDE
+- Chọn đúng **Board** và **cổng COM**
+- Upload chương trình
+- Kiểm tra:
+  - LCD hiển thị màn hình khởi động
+  - Sau đó hiển thị nhiệt độ và độ ẩm
+
+---
+
+### 6.2. Kiểm tra Serial bằng MATLAB Script
+
+- Mở MATLAB
+- Thêm thư mục project vào path:
+
+  ```matlab
+  addpath(genpath('TramThoiTiet_Arduino_MATLAB'));
+  % addpath + genpath: thêm toàn bộ thư mục dự án (và các thư mục con)
+  % để MATLAB có thể gọi được các file .m, .mlapp, .slx trong project
+  ```
+- Chạy:
+  
