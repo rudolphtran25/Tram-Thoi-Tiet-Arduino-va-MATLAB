@@ -322,12 +322,17 @@ Ví dụ
 T:30.5;H:65.2
 % Code đọc lại chuỗi
 data = sscanf(char(line), 'T:%f;H:%f');
+```
 
 ---
 
 ## 8. Lưu ý & Xử Lý Lỗi
 
-Cần kiểm tra xem cổng COM và giá trị trước đó trong `**Device Manager**`
+Cần kiểm tra xem cổng COM và giá trị trước đó trong **`Device Manager`**
+
+<img width="365" height="114" alt="image" src="https://github.com/user-attachments/assets/e5aad2b8-fdee-474f-88cc-729d332bc175" />
+
+<img width="403" height="448" alt="image" src="https://github.com/user-attachments/assets/6c97800b-7bbd-43f6-a0f0-625c4d570e6f" />
 
 ### Không thấy cổng COM trong MATLAB
 
@@ -346,3 +351,16 @@ Cần kiểm tra xem cổng COM và giá trị trước đó trong `**Device Man
   % Trong đó baud là giá trị tốc độ truyền. Thường là 9600, trong Simulink có khi phải lên tới 115200
   ```
 - Nếu không trùng thì dữ liệu sẽ bị sai, hoặc bị hỏng, hoặc không đọc được
+
+### Dữ liệu lỗi / NaN từ cảm biến
+- Nếu bên Arduino dùng isnan(h) hoặc isnan(t) để kiểm tra và báo lỗi:
+  - Kiểm tra lại dây nối DHT22.
+  - Đảm bảo cấp nguồn đúng.
+
+### Kẹt cổng Serial (port busy)
+- Nếu script/App dừng đột ngột mà không đóng cổng:
+    Hàm `cleanup(sp)` trong code có nhiệm vụ giải phóng cổng.
+- Nếu vẫn báo lỗi:
+    Đóng hết session MATLAB liên quan hoặc khởi động lại MATLAB.
+- Không mở cùng một cổng COM bằng nhiều chương trình cùng lúc:
+    Ví dụ: Arduino Serial Monitor + MATLAB cùng mở sẽ gây lỗi.
