@@ -262,6 +262,8 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 
 ### 6.3. Chạy ứng dụng MATLAB App
 
+<img width="689" height="480" alt="image" src="https://github.com/user-attachments/assets/f43356d7-f5a4-47e4-bf90-438593154f0c" />
+
 1. Mở file `TramThoiTietApp.mlapp` trong MATLAB.
 2. Nhấn **Run** để khởi động ứng dụng App Designer.
 3. Trong giao diện ứng dụng:
