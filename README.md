@@ -258,4 +258,9 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
   % để MATLAB có thể gọi được các file .m, .mlapp, .slx trong project
   ```
 - Chạy:
+  ```matlab
+  DocDuLieuArduino();
+  % Gọi script đọc dữ liệu từ Arduino để kiểm tra kết nối & định dạng
+  ```
+- Quan sát Command Windows: Giá trị đưa ra đúng định dạng → Kết nối và định dạng dữ liệu Arduino OK.
   
