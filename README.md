@@ -315,3 +315,34 @@ data = sscanf(char(line), 'T:%f,H:%f');
 %   - Đọc 1 số thực (độ ẩm)
 ```
 Đúng định dạng sẽ cho ra được giá trị `data(1) = 30.5`, `data(2) = 65.2`
+Nếu thay đổi định dạng đầu ra, bắt buộc phải chỉnh lại theo đúng định dạng
+Ví dụ
+```
+% Đầu ra Arduino
+T:30.5;H:65.2
+% Code đọc lại chuỗi
+data = sscanf(char(line), 'T:%f;H:%f');
+
+---
+
+## 8. Lưu ý & Xử Lý Lỗi
+
+Cần kiểm tra xem cổng COM và giá trị trước đó trong `**Device Manager**`
+
+### Không thấy cổng COM trong MATLAB
+
+- Kiểm tra cáp USB, driver.
+- Đảm bảo Arduino đang được cấp nguồn.
+- Dùng:
+  ```matlab
+  serialportlist("available")
+  ```
+  để xem danh sách hiện có
+
+### Sai Baud Rate
+- Đảm bảo trong code Arduino
+  ```
+  Serial.begin(Baud);
+  % Trong đó baud là giá trị tốc độ truyền. Thường là 9600, trong Simulink có khi phải lên tới 115200
+  ```
+- Nếu không trùng thì dữ liệu sẽ bị sai, hoặc bị hỏng, hoặc không đọc được
