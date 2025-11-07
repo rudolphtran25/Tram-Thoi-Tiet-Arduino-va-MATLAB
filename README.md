@@ -165,4 +165,12 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
 - Vòng lặp đọc liên tục:
   - `sp.NumBytesAvailable` - Số byte có trong buffer để đọc
   - `readline(sp)` - Đọc 1 dòng dữ liệu đến ký tự terminator ("CR/LF"), ví dụ "T:30.5,H:65.2"
-  - `data = sscanf(char(line), 'T:%f,H:%f')`
+  - `data = sscanf(char(line), 'T:%f,H:%f')` - Đọc chuỗi theo định dạng trên
+  - thêm lệnh tạm dừng 0.05s để tránh bị treo CPU - `pause(0.05)`
+- Xử lý tài nguyên
+  - Đảm bảo đóng cổng Serial khi dừng hoặc lỗi: `c = onCleanup(@() cleanup(sp))`
+  - `cleanup(sp)` - Kiểm tra và xóa đối tượng serial để giải phóng cổng COM
+
+**Mục đích:**
+- Kiểm tra nhanh Arduino có gửi đúng định dạng T:<float>,H:<float> hay không.
+- Logic parse chuỗi này được dùng lại cho MATLAB App Designer và các module khác.
