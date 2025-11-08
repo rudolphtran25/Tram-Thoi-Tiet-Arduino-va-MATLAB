@@ -6,7 +6,7 @@
 
 - Màn hình LCD I2C gắn với Arduino
 - Ứng dụng **MATLAB App Designer** (GUI)
-- Mô hình **Simulink** (IO Device Builder / DHT22)
+- Mô hình **Simulink** (DHT22)
 
 Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATLAB qua cổng Serial, phục vụ giám sát và mô phỏng.
 
@@ -35,7 +35,8 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
 
 - Arduino Uno
 - Cảm biến DHT22
-- LCD I2C 16x2 (địa chỉ 0x27 hoặc 0x3F)
+- LCD 1602 (địa chỉ 0x27)
+- Module LCD I2C
 - Dây nối, nguồn 5V và GND
 
 **Kết nối:**
@@ -64,7 +65,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
    - Đọc chuỗi dữ liệu, tách giá trị T & H.
    - In kết quả ra Command Window (dùng để test/kiểm tra).
 
-3. **MATLAB App Designer (Giao_Dien_Tram_Du_Bao.mlapp)**
+3. **MATLAB App Designer (`Giao_Dien_Tram_Du_Bao.mlapp`)**
    - Giao diện đồ họa như thiết kế:
      - Dropdown chọn COM.
      - Dropdown chọn Baud Rate.
@@ -74,7 +75,7 @@ Dữ liệu được truyền **theo thời gian thực** từ Arduino sang MATL
      - Nhãn trạng thái kết nối.
    - Logic đọc & xử lý tương tự `DocDuLieuArduino.m` nhưng cập nhật lên GUI.
      
-4. **Simulink (Simulink_Hardware.slx)**
+4. **Simulink (`Simulink_Hardware.slx`)**
    - Khối DHT22/IO Device Builder có 2 đầu ra:
      - `NhietDo`
      - `DoAm`
@@ -102,10 +103,6 @@ TramThoiTiet_Arduino_MATLAB/
 │   └─ SIMULINK
 |       ├─ DHT22
 |       └─ Simulink_Hardware.slx
-│
-├─ DOCS/
-│   ├─ Bao cao Tram Thoi tiet Arduino va MATLAB - Nhom 3
-│   └─ Phan_chia_cong_viec.xlsx
 │
 ├─ LIBRARY/
 │   ├─ FAdafruit_Sensor-1.1.15.zip
@@ -212,13 +209,13 @@ DocDuLieuArduino("COM6", 9600);  % Chỉ định trực tiếp
   - Đóng cổng Serial (xóa đối tượng)
   - Cập nhật trạng thái: `Chưa kết nối`
 
-### 5.4. Simulink (`TramThoiTiet_DHT22.slx` - nếu sử dụng)
+### 5.4. Simulink (`Simulink_Hardware.slx`)
 
 - Xây dựng mô hình Simulink mô phỏng/nhận dữ liệu từ cảm biến DHT22.
 
 **Sử dụng:**
 
-- Khối **IO Device Builder** hoặc khối tùy chỉnh để đọc DHT22.
+- Khối **IO Device Builder** dùng để tùy chỉnh để đọc DHT22.
 
 **Đầu ra mô phỏng:**
 
